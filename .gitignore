@@ -6,3 +6,17 @@ CLAUDE.md
 out/
 build/
 dist/
+
+# slide media — repo is public; keep real photos/videos/3D models local-only.
+# Slide.jsx components are still tracked; drop matching files in locally to build.
+**/slides/**/*.jpg
+**/slides/**/*.jpeg
+**/slides/**/*.png
+**/slides/**/*.gif
+**/slides/**/*.webp
+**/slides/**/*.mp4
+**/slides/**/*.mov
+**/slides/**/*.webm
+**/slides/**/*.stl
+**/slides/**/*.glb
+**/slides/**/*.gltf

@@ -3,7 +3,7 @@ import { manifest } from './slides/manifest.js';
 
 const FADE_MS = 350;
 
-const slideModules = import.meta.glob('./slides/*/Slide.jsx', { eager: true });
+const slideModules = import.meta.glob('./slides/**/Slide.jsx', { eager: true });
 
 function getSlideComponent(name) {
   const entry = Object.entries(slideModules).find(([path]) =>
@@ -42,7 +42,7 @@ export default function App() {
         &#8592;
       </button>
       <div id="slide-content" className={fading ? 'fade-out' : ''}>
-        {SlideComponent ? <SlideComponent /> : null}
+        {SlideComponent ? <SlideComponent index={index} total={manifest.length} /> : null}
       </div>
       <button
         id="next-button"
