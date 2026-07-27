@@ -59,3 +59,29 @@ export function CompressIcon({ size = 16 }) {
     </svg>
   );
 }
+
+export function SunIcon({ size = 15 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <circle cx="8" cy="8" r="3.2" fill="currentColor" />
+      <g stroke="currentColor" strokeWidth="1.3" strokeLinecap="round">
+        <line x1="8" y1="0.5" x2="8" y2="2.3" />
+        <line x1="8" y1="13.7" x2="8" y2="15.5" />
+        <line x1="0.5" y1="8" x2="2.3" y2="8" />
+        <line x1="13.7" y1="8" x2="15.5" y2="8" />
+        <line x1="2.6" y1="2.6" x2="3.9" y2="3.9" />
+        <line x1="12.1" y1="12.1" x2="13.4" y2="13.4" />
+        <line x1="2.6" y1="13.4" x2="3.9" y2="12.1" />
+        <line x1="12.1" y1="3.9" x2="13.4" y2="2.6" />
+      </g>
+    </svg>
+  );
+}
+
+export function MoonIcon({ size = 15 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <path d="M13.5 9.5A6 6 0 116.5 2.5a5 5 0 007 7z" fill="currentColor" />
+    </svg>
+  );
+}

@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { HomeIcon, GridIcon, ExpandIcon, CompressIcon } from './icons.jsx';
+import { HomeIcon, GridIcon, ExpandIcon, CompressIcon, SunIcon, MoonIcon } from './icons.jsx';
 import './topbar.css';
 
 const REVEAL_THRESHOLD_PX = 12;
@@ -7,12 +7,14 @@ const REVEAL_THRESHOLD_PX = 12;
 export default function TopBar({
   visible,
   isFullscreen,
+  theme,
   showNavButtons,
   onShow,
   onScheduleHide,
   onHome,
   onDeck,
   onToggleFullscreen,
+  onToggleTheme,
 }) {
   useEffect(() => {
     function handleMouseMove(e) {
@@ -45,6 +47,14 @@ export default function TopBar({
         )}
       </div>
       <div className="topbar-right">
+        <button
+          type="button"
+          className="topbar-icon-button"
+          onClick={onToggleTheme}
+          aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+        >
+          {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
+        </button>
         <button
           type="button"
           className="topbar-icon-button"

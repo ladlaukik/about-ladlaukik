@@ -1,10 +1,11 @@
 .deck-grid {
   position: absolute;
   inset: 0;
-  background: #111214;
+  background: var(--bg);
   overflow-y: auto;
   box-sizing: border-box;
   padding: 5.5rem 3rem 3rem;
+  transition: background 200ms ease;
 }
 
 .deck-grid-inner {
@@ -22,14 +23,14 @@
   padding: 0;
   border: 2px solid transparent;
   border-radius: 8px;
-  background: #1a1b1e;
+  background: var(--surface);
   overflow: hidden;
   cursor: pointer;
-  transition: border-color 150ms ease, transform 150ms ease;
+  transition: border-color 150ms ease, transform 150ms ease, background 200ms ease;
 }
 
 .grid-thumb:hover {
-  border-color: rgba(255, 255, 255, 0.28);
+  border-color: var(--border-strong);
   transform: translateY(-2px);
 }
 

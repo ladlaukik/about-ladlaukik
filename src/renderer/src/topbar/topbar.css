@@ -9,14 +9,15 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 1.1rem;
-  background: rgba(15, 16, 18, 0.82);
+  background: var(--topbar-bg);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid var(--border);
   transform: translateY(-100%);
   opacity: 0;
   pointer-events: none;
-  transition: transform 350ms ease, opacity 350ms ease;
+  transition: transform 350ms ease, opacity 350ms ease, background 200ms ease,
+    border-color 200ms ease;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
@@ -31,13 +32,18 @@
   gap: 0.4rem;
 }
 
+.topbar-right {
+  display: flex;
+  gap: 0.3rem;
+}
+
 .topbar-button {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   background: transparent;
   border: none;
-  color: #e8e9eb;
+  color: var(--text-primary);
   font-size: 0.8rem;
   font-weight: 500;
   letter-spacing: 0.01em;
@@ -48,7 +54,7 @@
 }
 
 .topbar-button:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--hover-overlay);
 }
 
 .topbar-icon-button {
@@ -59,12 +65,12 @@
   height: 32px;
   background: transparent;
   border: none;
-  color: #e8e9eb;
+  color: var(--text-primary);
   border-radius: 7px;
   cursor: pointer;
   transition: background 150ms ease;
 }
 
 .topbar-icon-button:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--hover-overlay);
 }

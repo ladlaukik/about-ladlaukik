@@ -11,7 +11,12 @@ export default function App() {
   const [slideIndex, setSlideIndex] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [barVisible, setBarVisible] = useState(true);
+  const [theme, setTheme] = useState('dark'); // 'dark' | 'light'
   const hideTimer = useRef(null);
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [theme]);
 
   const showBar = useCallback(() => {
     setBarVisible(true);
@@ -75,18 +80,24 @@ export default function App() {
     window.api.setFullscreen(!isFullscreen);
   }, [isFullscreen]);
 
+  const handleToggleTheme = useCallback(() => {
+    setTheme((t) => (t === 'dark' ? 'light' : 'dark'));
+  }, []);
+
   return (
     <>
       {!isFullscreen && (
         <TopBar
           visible={barVisible}
           isFullscreen={isFullscreen}
+          theme={theme}
           showNavButtons={view !== 'landing'}
           onShow={showBar}
           onScheduleHide={scheduleHideBar}
           onHome={handleGoHome}
           onDeck={handleViewDeck}
           onToggleFullscreen={handleToggleFullscreen}
+          onToggleTheme={handleToggleTheme}
         />
       )}
       {view === 'landing' && (

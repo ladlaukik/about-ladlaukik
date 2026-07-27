@@ -1,0 +1,23 @@
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --bg: #111214;
+  --text-primary: #f2f2f2;
+  --text-secondary: #9a9da3;
+  --surface: #1a1b1e;
+  --border: rgba(255, 255, 255, 0.14);
+  --border-strong: rgba(255, 255, 255, 0.28);
+  --topbar-bg: rgba(15, 16, 18, 0.82);
+  --hover-overlay: rgba(255, 255, 255, 0.1);
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+  --bg: #f2f1ee;
+  --text-primary: #24262a;
+  --text-secondary: #6c6f76;
+  --surface: #e3e2de;
+  --border: rgba(0, 0, 0, 0.12);
+  --border-strong: rgba(0, 0, 0, 0.24);
+  --topbar-bg: rgba(242, 241, 238, 0.85);
+  --hover-overlay: rgba(0, 0, 0, 0.06);
+}
