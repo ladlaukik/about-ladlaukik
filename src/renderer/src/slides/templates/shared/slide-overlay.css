@@ -1,0 +1,74 @@
+.template-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(230, 234, 238, 0.62) 0%,
+    rgba(230, 234, 238, 0.22) 18%,
+    rgba(230, 234, 238, 0) 38%
+  );
+  pointer-events: none;
+}
+
+.template-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 4vh 3vw;
+  pointer-events: none;
+}
+
+.template-text {
+  max-width: 56ch;
+}
+
+.template-title {
+  font-family: 'Open Sans', sans-serif;
+  font-style: italic;
+  font-weight: 700;
+  font-size: clamp(1.2rem, 1.9vw, 2.1rem);
+  color: #1c1e21;
+  margin-bottom: 0.9em;
+}
+
+.template-description {
+  font-family: 'Merriweather', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(0.85rem, 1.1vw, 1.15rem);
+  line-height: 1.5;
+  color: #2c2f33;
+}
+
+.template-footer {
+  position: absolute;
+  right: 3vw;
+  bottom: 4vh;
+  display: flex;
+  align-items: center;
+  gap: 0.75em;
+}
+
+.template-footer-text {
+  font-family: 'Merriweather', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(0.65rem, 0.85vw, 0.9rem);
+  color: #6b6f76;
+  white-space: nowrap;
+}
+
+.template-logo {
+  font-family: 'Merriweather', serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: clamp(1.3rem, 2vw, 2.1rem);
+  color: #34383d;
+  line-height: 1;
+}
+
+.template-logo sup {
+  font-size: 0.55em;
+}

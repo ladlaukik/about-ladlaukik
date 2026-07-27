@@ -1,0 +1,15 @@
+.template-slide {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #111214;
+}
+
+.template-media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
