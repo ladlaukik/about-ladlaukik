@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { manifest, getSlideComponent } from './slides/registry.js';
+import { isContinuousTransition } from './slides/shared/continuousTransitions.js';
 
 const FADE_MS = 350;
 const CENTER_OPACITY = 0.1;
@@ -13,6 +14,13 @@ export default function Deck({ index, onIndexChange }) {
   const goTo = useCallback(
     (next) => {
       if (next < 0 || next >= manifest.length || next === index || fading) return;
+      // Continuous pairs (e.g. slide-02 -> slide-03) render near-identical
+      // layouts on purpose — cut instantly instead of fading to black and
+      // back, so only what's actually different animates in.
+      if (isContinuousTransition(manifest[index], manifest[next])) {
+        onIndexChange(next);
+        return;
+      }
       setFading(true);
       setTimeout(() => {
         onIndexChange(next);
