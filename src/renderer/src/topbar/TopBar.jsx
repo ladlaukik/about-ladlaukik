@@ -2,7 +2,8 @@ import { useEffect } from 'react';
 import { HomeIcon, GridIcon, ExpandIcon, CompressIcon, SunIcon, MoonIcon } from './icons.jsx';
 import './topbar.css';
 
-const REVEAL_THRESHOLD_PX = 12;
+const REVEAL_THRESHOLD_PX = 52; // matches .topbar's height — the bar's own footprint
+const REVEAL_DELAY_MS = 1000;
 
 export default function TopBar({
   visible,
@@ -17,13 +18,26 @@ export default function TopBar({
   onToggleTheme,
 }) {
   useEffect(() => {
+    let revealTimer = null;
+    let inZone = false;
+
     function handleMouseMove(e) {
-      if (e.clientY <= REVEAL_THRESHOLD_PX) {
-        onShow();
+      const nowInZone = e.clientY <= REVEAL_THRESHOLD_PX;
+      if (nowInZone && !inZone) {
+        inZone = true;
+        revealTimer = setTimeout(onShow, REVEAL_DELAY_MS);
+      } else if (!nowInZone && inZone) {
+        inZone = false;
+        clearTimeout(revealTimer);
+        revealTimer = null;
       }
     }
+
     window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      clearTimeout(revealTimer);
+    };
   }, [onShow]);
 
   return (

@@ -28,7 +28,7 @@ export default function Slide() {
             preserveAspectRatio="none"
             aria-hidden="true"
           >
-            <line x1="4" y1="66" x2="96" y2="4" stroke="#33363a" strokeWidth="1.4" />
+            <line x1="4" y1="66" x2="96" y2="4" stroke="currentColor" strokeWidth="1.4" />
           </svg>
           <span className="title-word title-word-product">Product</span>
         </div>
