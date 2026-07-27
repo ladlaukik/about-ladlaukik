@@ -1,0 +1,64 @@
+.deck-grid {
+  position: absolute;
+  inset: 0;
+  background: #111214;
+  overflow-y: auto;
+  box-sizing: border-box;
+  padding: 5.5rem 3rem 3rem;
+}
+
+.deck-grid-inner {
+  display: grid;
+  grid-template-columns: repeat(var(--columns, 4), 1fr);
+  gap: var(--gap, 24px);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.grid-thumb {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  background: #1a1b1e;
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 150ms ease, transform 150ms ease;
+}
+
+.grid-thumb:hover {
+  border-color: rgba(255, 255, 255, 0.28);
+  transform: translateY(-2px);
+}
+
+.grid-thumb-current {
+  border-color: #7c9cff;
+}
+
+.grid-thumb-viewport {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.grid-thumb-stage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: top left;
+  pointer-events: none;
+}
+
+.grid-thumb-number {
+  position: absolute;
+  bottom: 6px;
+  right: 8px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.7);
+  background: rgba(0, 0, 0, 0.45);
+  padding: 1px 6px;
+  border-radius: 4px;
+}

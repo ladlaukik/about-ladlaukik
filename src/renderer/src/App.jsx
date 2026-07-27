@@ -1,58 +1,92 @@
-import { useCallback, useState } from 'react';
-import { manifest } from './slides/manifest.js';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import Deck from './Deck.jsx';
+import LandingPage from './landing/LandingPage.jsx';
+import DeckGrid from './grid/DeckGrid.jsx';
+import TopBar from './topbar/TopBar.jsx';
 
-const FADE_MS = 350;
-
-const slideModules = import.meta.glob('./slides/**/Slide.jsx', { eager: true });
-
-function getSlideComponent(name) {
-  const entry = Object.entries(slideModules).find(([path]) =>
-    path.includes(`/slides/${name}/`),
-  );
-  return entry ? entry[1].default : null;
-}
+const HIDE_DELAY_MS = 3000;
 
 export default function App() {
-  const [index, setIndex] = useState(0);
-  const [fading, setFading] = useState(false);
+  const [view, setView] = useState('landing'); // 'landing' | 'deck' | 'grid'
+  const [slideIndex, setSlideIndex] = useState(0);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [barVisible, setBarVisible] = useState(true);
+  const hideTimer = useRef(null);
 
-  const goTo = useCallback(
-    (next) => {
-      if (next < 0 || next >= manifest.length || next === index || fading) return;
-      setFading(true);
-      setTimeout(() => {
-        setIndex(next);
-        setFading(false);
-      }, FADE_MS);
-    },
-    [index, fading],
-  );
+  const showBar = useCallback(() => {
+    setBarVisible(true);
+    if (hideTimer.current) clearTimeout(hideTimer.current);
+  }, []);
 
-  const SlideComponent = getSlideComponent(manifest[index]);
+  const scheduleHideBar = useCallback(() => {
+    if (hideTimer.current) clearTimeout(hideTimer.current);
+    hideTimer.current = setTimeout(() => setBarVisible(false), HIDE_DELAY_MS);
+  }, []);
+
+  useEffect(() => {
+    scheduleHideBar();
+    return () => {
+      if (hideTimer.current) clearTimeout(hideTimer.current);
+    };
+  }, [scheduleHideBar]);
+
+  useEffect(() => {
+    window.api.isFullscreen().then(setIsFullscreen);
+    const unsubscribe = window.api.onFullscreenChange(setIsFullscreen);
+    return unsubscribe;
+  }, []);
+
+  useEffect(() => {
+    function handleKeyDown(e) {
+      if (e.key !== 'Escape') return;
+      if (isFullscreen) {
+        window.api.setFullscreen(false);
+        showBar();
+        scheduleHideBar();
+      } else if (view === 'grid') {
+        setView('deck');
+      } else {
+        setView('grid');
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isFullscreen, view, showBar, scheduleHideBar]);
+
+  const handlePresent = useCallback(() => {
+    window.api.setFullscreen(true);
+    setView('deck');
+  }, []);
+
+  const handleViewDeck = useCallback(() => {
+    setView('grid');
+  }, []);
+
+  const handleSelectSlide = useCallback((index) => {
+    setSlideIndex(index);
+    setView('deck');
+  }, []);
+
+  const handleToggleFullscreen = useCallback(() => {
+    window.api.setFullscreen(!isFullscreen);
+  }, [isFullscreen]);
 
   return (
-    <div id="deck">
-      <button
-        id="prev-button"
-        className="nav-button"
-        aria-label="Previous slide"
-        disabled={index === 0}
-        onClick={() => goTo(index - 1)}
-      >
-        &#8592;
-      </button>
-      <div id="slide-content" className={fading ? 'fade-out' : ''}>
-        {SlideComponent ? <SlideComponent index={index} total={manifest.length} /> : null}
-      </div>
-      <button
-        id="next-button"
-        className="nav-button"
-        aria-label="Next slide"
-        disabled={index === manifest.length - 1}
-        onClick={() => goTo(index + 1)}
-      >
-        &#8594;
-      </button>
-    </div>
+    <>
+      {!isFullscreen && (
+        <TopBar
+          visible={barVisible}
+          isFullscreen={isFullscreen}
+          onShow={showBar}
+          onScheduleHide={scheduleHideBar}
+          onViewDeck={handleViewDeck}
+          onPresent={handlePresent}
+          onToggleFullscreen={handleToggleFullscreen}
+        />
+      )}
+      {view === 'landing' && <LandingPage />}
+      {view === 'deck' && <Deck index={slideIndex} onIndexChange={setSlideIndex} />}
+      {view === 'grid' && <DeckGrid currentIndex={slideIndex} onSelect={handleSelectSlide} />}
+    </>
   );
 }
