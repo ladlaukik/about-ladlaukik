@@ -102,8 +102,12 @@
   transition: transform 650ms cubic-bezier(0.45, 0, 0.2, 1);
 }
 
-.equation-blank-reel.scrolling {
+.equation-blank-reel.scrolling-forward {
   transform: translateY(0);
+}
+
+.equation-blank-reel.scrolling-backward {
+  transform: translateY(-2.3em);
 }
 
 .equation-blank-reel.no-transition {

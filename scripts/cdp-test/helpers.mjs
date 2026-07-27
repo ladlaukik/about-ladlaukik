@@ -51,6 +51,10 @@ export async function rightClick(send, x, y) {
   await send('Input.dispatchMouseEvent', { type: 'mouseReleased', x, y, button: 'right', clickCount: 1 });
 }
 
+export async function wheel(send, x, y, deltaY) {
+  await send('Input.dispatchMouseEvent', { type: 'mouseWheel', x, y, deltaX: 0, deltaY });
+}
+
 export async function keyPress(send, key, code, windowsVirtualKeyCode) {
   await send('Input.dispatchKeyEvent', { type: 'keyDown', key, code, windowsVirtualKeyCode });
   await send('Input.dispatchKeyEvent', { type: 'keyUp', key, code, windowsVirtualKeyCode });
