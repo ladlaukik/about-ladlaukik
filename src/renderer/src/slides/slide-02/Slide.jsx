@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { setLastWordIndex } from '../shared/equationWordState.js';
 import './equation-slide.css';
 
 const WORDS = [
@@ -32,6 +33,12 @@ export default function Slide() {
   const [direction, setDirection] = useState(null); // 'forward' | 'backward' | null
   const [suppressTransition, setSuppressTransition] = useState(false);
   const [hovering, setHovering] = useState(false);
+
+  // slide-03 is a continuation of this same equation — it resumes on
+  // whatever word was showing here last, so every change gets mirrored out.
+  useEffect(() => {
+    setLastWordIndex(current);
+  }, [current]);
 
   // Only starts a step if the reel is idle — a request that arrives mid-
   // animation (auto tick or wheel flick) is simply dropped.
