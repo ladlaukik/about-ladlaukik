@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 import { join } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -8,17 +8,27 @@ function createWindow() {
   const mainWindow = new BrowserWindow({
     width: 1280,
     height: 800,
-    fullscreen: true,
+    show: false,
     autoHideMenuBar: true,
     backgroundColor: '#111214',
     webPreferences: {
+      preload: join(__dirname, '../preload/index.js'),
       contextIsolation: true,
       nodeIntegration: false,
     },
   });
 
   mainWindow.on('ready-to-show', () => {
+    mainWindow.maximize();
     mainWindow.show();
+  });
+
+  mainWindow.on('enter-full-screen', () => {
+    mainWindow.webContents.send('fullscreen-changed', true);
+  });
+
+  mainWindow.on('leave-full-screen', () => {
+    mainWindow.webContents.send('fullscreen-changed', false);
   });
 
   const devServerUrl = process.env['ELECTRON_RENDERER_URL'];
@@ -28,6 +38,17 @@ function createWindow() {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'));
   }
 }
+
+ipcMain.handle('set-fullscreen', (event, value) => {
+  const win = BrowserWindow.fromWebContents(event.sender);
+  win.setFullScreen(Boolean(value));
+  return win.isFullScreen();
+});
+
+ipcMain.handle('get-fullscreen', (event) => {
+  const win = BrowserWindow.fromWebContents(event.sender);
+  return win.isFullScreen();
+});
 
 app.whenReady().then(() => {
   createWindow();
