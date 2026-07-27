@@ -1,0 +1,48 @@
+{
+  "name": "about-ladlaukik",
+  "version": "1.0.0",
+  "description": "LTIADS Vyakhyan talk deck — Electron slide presentation",
+  "private": true,
+  "type": "module",
+  "main": "./out/main/index.js",
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "electron-vite build",
+    "preview": "electron-vite preview",
+    "postinstall": "electron-builder install-app-deps",
+    "build:win": "electron-vite build && electron-builder --win"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ladlaukik/about-ladlaukik.git"
+  },
+  "author": "",
+  "license": "UNLICENSED",
+  "build": {
+    "appId": "com.ladlaukik.about-ladlaukik",
+    "productName": "LTIADS Vyakhyan",
+    "directories": {
+      "output": "build"
+    },
+    "files": [
+      "out/**/*"
+    ],
+    "win": {
+      "target": "nsis"
+    }
+  },
+  "dependencies": {
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "^9.6.1",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "three": "^0.185.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^5.2.0",
+    "electron": "^43.2.0",
+    "electron-builder": "^26.15.3",
+    "electron-vite": "^5.0.0",
+    "vite": "^7.3.6"
+  }
+}
