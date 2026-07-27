@@ -26,12 +26,11 @@ const WORDS = [
 
 const CYCLE_MS = 3000;
 const TRANSITION_MS = 450;
+const PEEK = 2; // rows of neighboring words visible above/below the current one
 
 export default function Slide() {
   const [current, setCurrent] = useState(0);
   const [scrolling, setScrolling] = useState(false);
-  const prevIndex = (current - 1 + WORDS.length) % WORDS.length;
-  const nextIndex = (current + 1) % WORDS.length;
 
   useEffect(() => {
     let swapTimeout;
@@ -48,19 +47,34 @@ export default function Slide() {
     };
   }, []);
 
+  // One extra buffer row below the visible window (offset PEEK + 1) so the
+  // reel always has a word ready to scroll in — never an empty gap.
+  const rows = [];
+  for (let offset = -PEEK; offset <= PEEK + 1; offset += 1) {
+    const idx = ((current + offset) % WORDS.length + WORDS.length) % WORDS.length;
+    rows.push({ offset, word: WORDS[idx] });
+  }
+
   return (
     <div className="equation-slide">
-      <h1 className="equation-slide-title">. What is design?</h1>
-      <p className="equation-slide-description">
-        Design is usually judged by what it produces — but every product is just the visible
-        residue of a process. This talk starts with the harder question: process of what?
-      </p>
+      <div className="equation-slide-overlay">
+        <div className="equation-slide-title">. What is design?</div>
+        <div className="equation-slide-description">
+          Design is usually judged by what it produces — but every product is just the visible
+          residue of a process. This talk starts with the harder question: process of what?
+        </div>
+      </div>
       <div className="equation">
         <span className="equation-blank-track">
           <span className={`equation-blank-reel ${scrolling ? 'scrolling' : ''}`}>
-            <span className="equation-blank-row equation-blank-row-peek">{WORDS[prevIndex]}</span>
-            <span className="equation-blank-row equation-blank-row-current">{WORDS[current]}</span>
-            <span className="equation-blank-row equation-blank-row-peek">{WORDS[nextIndex]}</span>
+            {rows.map(({ offset, word }) => (
+              <span
+                key={offset}
+                className={`equation-blank-row equation-blank-row-peek-${Math.min(Math.abs(offset), PEEK)}`}
+              >
+                {word}
+              </span>
+            ))}
           </span>
         </span>
         <span className="equation-operator">+</span>

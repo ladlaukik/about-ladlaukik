@@ -1,29 +1,37 @@
 .equation-slide {
   position: absolute;
   inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 4vh;
-  padding: 6vw 10vw;
   background: var(--bg);
-  text-align: center;
   transition: background 200ms ease;
 }
 
+/* Title/description reuse the fullImage/fullVideo/full3d templates' format
+   (Open Sans bold italic title, Merriweather italic description, bottom-left)
+   but with theme.css variables instead of the templates' fixed colors, since
+   this slide's background is plain (not full-bleed media). */
+.equation-slide-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding: 4vh 3vw;
+  text-align: left;
+  pointer-events: none;
+}
+
 .equation-slide-title {
-  margin: 0 0 0.9em;
   font-family: 'Open Sans', sans-serif;
   font-style: italic;
   font-weight: 700;
   font-size: clamp(1.2rem, 1.9vw, 2.1rem);
   color: var(--text-primary);
+  margin-bottom: 0.9em;
 }
 
 .equation-slide-description {
-  margin: 0;
-  max-width: 48ch;
+  max-width: 56ch;
   font-family: 'Merriweather', serif;
   font-style: italic;
   font-weight: 400;
@@ -32,12 +40,16 @@
   color: var(--text-secondary);
 }
 
+/* Fixed dead-center hero — position is absolute and independent of the
+   overlay text, so it never moves as the blank word scrolls. */
 .equation {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   display: flex;
-  align-items: baseline;
-  justify-content: center;
+  align-items: center;
   gap: 0.5em;
-  margin-top: 1vh;
   font-family: 'Open Sans', sans-serif;
   font-style: normal;
   font-weight: 700;
@@ -60,50 +72,45 @@
 }
 
 /* Fixed-size window so the equation never re-centers as the cycling word's
-   length changes. A 3-row reel (prev/current/next) sits inside, with the
-   current word centered and slivers of its neighbors fading in above and
-   below — a continuous scrolling ticker, not a two-word cross-fade. */
+   length changes. The blank shares PROCESS/PRODUCT's exact type treatment;
+   only opacity distinguishes the current word from its faint neighbors
+   scrolling past above and below. */
 .equation-blank-track {
   position: relative;
   display: inline-block;
-  width: 6.5em;
-  height: 2.4em;
+  width: 8em;
+  height: 5.75em;
   overflow: hidden;
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 25%, black 75%, transparent 100%);
-  mask-image: linear-gradient(to bottom, transparent 0%, black 25%, black 75%, transparent 100%);
 }
 
 .equation-blank-reel {
   display: flex;
   flex-direction: column;
   align-items: center;
-  transform: translateY(-0.3em);
+  transform: translateY(0);
   transition: transform 450ms ease;
 }
 
 .equation-blank-reel.scrolling {
-  transform: translateY(-1.3em);
+  transform: translateY(-1.15em);
 }
 
 .equation-blank-row {
-  height: 1em;
+  height: 1.15em;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: ui-monospace, 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 0.62em;
-  color: var(--text-secondary);
   white-space: nowrap;
 }
 
-.equation-blank-row-current {
+.equation-blank-row-peek-0 {
   opacity: 1;
-  border-bottom: 1.5px solid var(--border-strong);
-  padding-bottom: 0.15em;
 }
 
-.equation-blank-row-peek {
-  opacity: 0.35;
+.equation-blank-row-peek-1 {
+  opacity: 0.4;
+}
+
+.equation-blank-row-peek-2 {
+  opacity: 0.15;
 }
