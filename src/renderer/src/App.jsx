@@ -62,6 +62,10 @@ export default function App() {
     setView('grid');
   }, []);
 
+  const handleGoHome = useCallback(() => {
+    setView('landing');
+  }, []);
+
   const handleSelectSlide = useCallback((index) => {
     setSlideIndex(index);
     setView('deck');
@@ -77,14 +81,17 @@ export default function App() {
         <TopBar
           visible={barVisible}
           isFullscreen={isFullscreen}
+          showNavButtons={view !== 'landing'}
           onShow={showBar}
           onScheduleHide={scheduleHideBar}
-          onViewDeck={handleViewDeck}
-          onPresent={handlePresent}
+          onHome={handleGoHome}
+          onDeck={handleViewDeck}
           onToggleFullscreen={handleToggleFullscreen}
         />
       )}
-      {view === 'landing' && <LandingPage />}
+      {view === 'landing' && (
+        <LandingPage onViewDeck={handleViewDeck} onPresent={handlePresent} />
+      )}
       {view === 'deck' && <Deck index={slideIndex} onIndexChange={setSlideIndex} />}
       {view === 'grid' && <DeckGrid currentIndex={slideIndex} onSelect={handleSelectSlide} />}
     </>

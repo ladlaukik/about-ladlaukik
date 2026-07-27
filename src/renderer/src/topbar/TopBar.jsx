@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { GridIcon, PlayIcon, ExpandIcon, CompressIcon } from './icons.jsx';
+import { HomeIcon, GridIcon, ExpandIcon, CompressIcon } from './icons.jsx';
 import './topbar.css';
 
 const REVEAL_THRESHOLD_PX = 12;
@@ -7,10 +7,11 @@ const REVEAL_THRESHOLD_PX = 12;
 export default function TopBar({
   visible,
   isFullscreen,
+  showNavButtons,
   onShow,
   onScheduleHide,
-  onViewDeck,
-  onPresent,
+  onHome,
+  onDeck,
   onToggleFullscreen,
 }) {
   useEffect(() => {
@@ -30,14 +31,18 @@ export default function TopBar({
       onMouseLeave={onScheduleHide}
     >
       <div className="topbar-left">
-        <button type="button" className="topbar-button" onClick={onViewDeck}>
-          <GridIcon />
-          <span>View Deck</span>
-        </button>
-        <button type="button" className="topbar-button" onClick={onPresent}>
-          <PlayIcon />
-          <span>Present</span>
-        </button>
+        {showNavButtons && (
+          <>
+            <button type="button" className="topbar-button" onClick={onHome}>
+              <HomeIcon />
+              <span>Home</span>
+            </button>
+            <button type="button" className="topbar-button" onClick={onDeck}>
+              <GridIcon />
+              <span>Deck</span>
+            </button>
+          </>
+        )}
       </div>
       <div className="topbar-right">
         <button
