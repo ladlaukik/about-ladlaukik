@@ -48,12 +48,17 @@
   left: 50%;
   transform: translate(-50%, -50%);
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   gap: 0.5em;
   font-family: 'Open Sans', sans-serif;
   font-style: normal;
   font-weight: 700;
   font-size: clamp(1.4rem, 3.6vw, 3rem);
+  /* Unitless, inherited: PROCESS/PRODUCT and the blank's rows all compute
+     their line box from this same value, so their baselines land at the
+     same offset from each box's bottom edge — that's what keeps the
+     cycling word sitting exactly on the same line as the static text. */
+  line-height: 1.15;
   color: var(--text-primary);
   white-space: nowrap;
 }
@@ -73,13 +78,14 @@
 
 /* Fixed-size window so the equation never re-centers as the cycling word's
    length changes. The blank shares PROCESS/PRODUCT's exact type treatment;
-   only opacity distinguishes the current word from its faint neighbors
-   scrolling past above and below. */
+   only opacity distinguishes the current word from its faint upcoming
+   neighbors, which scroll down into place from above — nothing shows
+   below the current word. */
 .equation-blank-track {
   position: relative;
   display: inline-block;
   width: 8em;
-  height: 5.75em;
+  height: 3.45em;
   overflow: hidden;
 }
 
@@ -87,12 +93,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  transform: translateY(0);
+  transform: translateY(-1.15em);
   transition: transform 650ms cubic-bezier(0.45, 0, 0.2, 1);
 }
 
 .equation-blank-reel.scrolling {
-  transform: translateY(-1.15em);
+  transform: translateY(0);
 }
 
 .equation-blank-reel.no-transition {
@@ -100,11 +106,12 @@
 }
 
 .equation-blank-row {
-  height: 1.15em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  /* Height comes from the inherited line-height: 1.15 above, not a fixed
+     box + flex-centering — that's what makes it match PROCESS/PRODUCT's
+     own baseline placement instead of merely sharing a bottom edge. */
+  text-align: center;
   white-space: nowrap;
+  text-transform: uppercase;
 }
 
 .equation-blank-row-peek-0 {

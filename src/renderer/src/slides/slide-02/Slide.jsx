@@ -25,7 +25,7 @@ const WORDS = [
 ];
 
 const CYCLE_MS = 3000;
-const PEEK = 2; // rows of neighboring words visible above/below the current one
+const PEEK = 2; // rows of upcoming words visible above the current one
 
 export default function Slide() {
   const [current, setCurrent] = useState(0);
@@ -37,7 +37,7 @@ export default function Slide() {
     return () => clearInterval(interval);
   }, []);
 
-  // Once the scroll-up transition finishes, swap in the new word and snap
+  // Once the scroll-down transition finishes, swap in the new word and snap
   // the reel back to its resting position with transitions off — otherwise
   // that reset itself gets animated, producing a jagged double-motion right
   // as the word changes. Transitions are re-enabled two frames later, once
@@ -52,12 +52,14 @@ export default function Slide() {
     });
   }, [scrolling]);
 
-  // One extra buffer row below the visible window (offset PEEK + 1) so the
-  // reel always has a word ready to scroll in — never an empty gap.
+  // Current word sits at the bottom of the visible window with upcoming
+  // words peeking in above it — nothing rendered below. One extra buffer
+  // row (PEEK + 1 steps ahead) sits just off the top of the track so the
+  // reel always has a word ready to scroll down into view.
   const rows = [];
-  for (let offset = -PEEK; offset <= PEEK + 1; offset += 1) {
-    const idx = ((current + offset) % WORDS.length + WORDS.length) % WORDS.length;
-    rows.push({ offset, word: WORDS[idx] });
+  for (let stepsAhead = PEEK + 1; stepsAhead >= 0; stepsAhead -= 1) {
+    const idx = (current + stepsAhead) % WORDS.length;
+    rows.push({ stepsAhead, word: WORDS[idx] });
   }
 
   return (
@@ -77,10 +79,10 @@ export default function Slide() {
             }`}
             onTransitionEnd={handleTransitionEnd}
           >
-            {rows.map(({ offset, word }) => (
+            {rows.map(({ stepsAhead, word }) => (
               <span
-                key={offset}
-                className={`equation-blank-row equation-blank-row-peek-${Math.min(Math.abs(offset), PEEK)}`}
+                key={stepsAhead}
+                className={`equation-blank-row equation-blank-row-peek-${Math.min(stepsAhead, PEEK)}`}
               >
                 {word}
               </span>
