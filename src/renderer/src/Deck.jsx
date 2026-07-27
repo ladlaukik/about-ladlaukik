@@ -40,10 +40,43 @@ export default function Deck({ index, onIndexChange }) {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, [index]);
 
+  useEffect(() => {
+    function handleKeyDown(e) {
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        e.preventDefault();
+        goTo(index + 1);
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        goTo(index - 1);
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [goTo, index]);
+
+  // Left click anywhere advances, right click anywhere goes back — except on the
+  // nav buttons themselves, which already have their own explicit direction.
+  const handleDeckClick = useCallback(
+    (e) => {
+      if (e.target.closest('.nav-button')) return;
+      goTo(index + 1);
+    },
+    [goTo, index],
+  );
+
+  const handleDeckContextMenu = useCallback(
+    (e) => {
+      e.preventDefault();
+      if (e.target.closest('.nav-button')) return;
+      goTo(index - 1);
+    },
+    [goTo, index],
+  );
+
   const SlideComponent = getSlideComponent(manifest[index]);
 
   return (
-    <div id="deck">
+    <div id="deck" onClick={handleDeckClick} onContextMenu={handleDeckContextMenu}>
       <button
         ref={prevButtonRef}
         id="prev-button"
