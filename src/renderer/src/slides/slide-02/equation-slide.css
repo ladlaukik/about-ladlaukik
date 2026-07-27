@@ -41,12 +41,17 @@
 }
 
 /* Fixed dead-center hero — position is absolute and independent of the
-   overlay text, so it never moves as the blank word scrolls. */
+   overlay text, so it never moves as the blank word scrolls. Plain -50%
+   would center the whole flex box, but the box is taller than the actual
+   text line (it includes the 2 peek rows of empty space above the
+   current word), which would put the readable line below true center.
+   The extra -1.15em cancels exactly half that peek space (2 rows *
+   1.15em / 2), landing the text line itself on the slide's centerline. */
 .equation {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, calc(-50% - 1.15em));
   display: flex;
   align-items: flex-end;
   gap: 0.5em;
