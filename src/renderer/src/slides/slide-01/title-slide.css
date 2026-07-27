@@ -1,0 +1,111 @@
+.title-slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  background: #ececea;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  text-align: left;
+}
+
+.title-slide-left {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.title-brand {
+  font-family: 'Open Sans', sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: clamp(2.4rem, 5.2vw, 4.8rem);
+  letter-spacing: 0.01em;
+  color: #33363a;
+}
+
+.title-slide-divider {
+  width: 1px;
+  align-self: stretch;
+  margin: 15vh 0;
+  background: rgba(51, 54, 58, 0.35);
+}
+
+.title-slide-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3.5vh;
+  padding-left: 4vw;
+  box-sizing: border-box;
+}
+
+.title-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  font-family: 'Merriweather', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(0.8rem, 1.05vw, 1.05rem);
+  color: #7d8ba3;
+}
+
+.title-meta-row {
+  display: flex;
+  gap: 0.6em;
+}
+
+.title-meta-label {
+  min-width: 4.5em;
+}
+
+.title-lockup {
+  position: relative;
+  width: 15vw;
+  height: 10vw;
+  max-width: 230px;
+  max-height: 155px;
+}
+
+.title-word {
+  position: absolute;
+  font-family: 'Open Sans', sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: clamp(1.5rem, 2.5vw, 2.5rem);
+  color: #33363a;
+}
+
+.title-word-process {
+  top: 0;
+  left: 0;
+}
+
+.title-word-product {
+  bottom: 0;
+  right: 0;
+}
+
+.title-diagonal {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.title-signature {
+  font-family: 'Merriweather', serif;
+  font-style: italic;
+  font-size: clamp(1rem, 1.35vw, 1.25rem);
+}
+
+.title-signature-first {
+  font-weight: 700;
+  color: #33363a;
+}
+
+.title-signature-last {
+  font-weight: 400;
+  color: #8b8e93;
+}
