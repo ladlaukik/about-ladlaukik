@@ -1,0 +1,101 @@
+/* Shared by slide-02 through slide-05 — the "CONTEXT + PROGRAM = DESIGN"
+   equation sequence. Previously each slide had its own copy of these rules;
+   since plain class names aren't scoped per slide (Vite bundles every
+   slide's CSS into one file), identically-named-but-differently-valued
+   rules across files could silently override each other depending on
+   bundle order. Consolidating the identical parts here removes that
+   collision risk — each slide's own equation-slide.css should now contain
+   ONLY what's genuinely unique to it. */
+
+.equation-slide {
+  position: absolute;
+  inset: 0;
+  background: var(--bg);
+  transition: background 200ms ease;
+}
+
+/* Title/description reuse the fullImage/fullVideo/full3d templates' format
+   (Open Sans bold italic title, Merriweather italic description, bottom-left)
+   but with theme.css variables instead of the templates' fixed colors, since
+   this slide's background is plain (not full-bleed media). */
+.equation-slide-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding: 4vh 3vw;
+  text-align: left;
+  pointer-events: none;
+}
+
+.equation-slide-title {
+  font-family: 'Open Sans', sans-serif;
+  font-style: italic;
+  font-weight: 700;
+  font-size: clamp(1.2rem, 1.9vw, 2.1rem);
+  color: var(--text-primary);
+  margin-bottom: 0.9em;
+}
+
+.equation-slide-description {
+  max-width: 56ch;
+  font-family: 'Merriweather', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(0.85rem, 1.1vw, 1.15rem);
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+/* Fixed dead-center hero — position is absolute and independent of the
+   overlay text, so it never moves as a word-reel scrolls. Plain -50% would
+   center the whole flex box, but the box is taller than the actual text
+   line (it includes the 2 peek rows of empty space next to the current
+   word in each reel), which would put the readable line off true center.
+   The extra -var(--reel-row) cancels exactly half that peek space (2 rows
+   * reel-row / 2), landing the text line on the centerline. Same layout/
+   font-size on every slide in the chain on purpose — slide-02/03/04/05 cut
+   between each other instantly rather than fading (see
+   slides/shared/continuousTransitions), so any difference here would show
+   up as a visible jump. */
+.equation {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, calc(-50% - var(--reel-row)));
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5em;
+  font-family: 'Open Sans', sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: clamp(1.1rem, 2.8vw, 2.4rem);
+  /* Per-row height/spacing for both word-reels (see word-reel.css), and —
+     set equal to line-height below — the unit that keeps DESIGN and both
+     reels' current words on exactly the same baseline. */
+  --reel-row: 1.3em;
+  line-height: var(--reel-row);
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.equation-word {
+  position: relative;
+  z-index: 1;
+  letter-spacing: 0.01em;
+}
+
+/* Extra breathing room before DESIGN — the PRODUCT box (slide-03/04/05)
+   needs to sit in this gap without crowding "=". */
+.equation-word-design {
+  margin-left: 1.5em;
+}
+
+.equation-operator {
+  position: relative;
+  z-index: 1;
+  font-weight: 400;
+  color: var(--text-secondary);
+}

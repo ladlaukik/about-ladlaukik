@@ -1,0 +1,9 @@
+/* Everything else this slide needs (.equation-slide, .equation, box outline/
+   label styles, .equation-word-on-fill, etc.) comes from
+   slides/shared/equation-common.css and equation-box.css. This is the one
+   thing genuinely unique to slide-04: PRODUCT's box is solid-filled here
+   (light in dark mode, dark in light mode, i.e. var(--text-primary) — the
+   same rule that colors every box's outline). */
+.equation-box-rect-filled {
+  fill: var(--text-primary);
+}

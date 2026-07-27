@@ -1,0 +1,69 @@
+/* Fixed-size window so the equation never re-centers as the cycling word's
+   length changes. Font styling is intentionally not set here — it inherits
+   from whatever ancestor (each slide's .equation) so the reel always shares
+   its surrounding text's exact type treatment, including --reel-row (the
+   per-row height/spacing) and line-height, which each slide sets equal to
+   --reel-row so a row's height matches the transform math below exactly. */
+.word-reel-track {
+  position: relative;
+  /* Explicit, not relying on default flex-item stacking: on slide-04/05 a
+     PROCESS/PRODUCT box behind it can have a solid fill, and this needs to
+     stay above that fill rather than risk being painted under it. */
+  z-index: 1;
+  display: inline-block;
+  width: 8em;
+  height: calc(3 * var(--reel-row, 1.15em));
+  overflow: hidden;
+}
+
+/* 'up' mode's current word sits at the TOP of the 3-row window instead of
+   the bottom, 2 rows above where the track's own bottom edge is. Pulling
+   the track's alignment-box bottom up by that same 2 rows (via negative
+   margin, which doesn't affect its rendered size or horizontal layout —
+   only what the parent .equation's align-items: flex-end aligns against)
+   makes its current word land on the same line as a 'down' reel's, without
+   .equation needing to know which reels are which. */
+.word-reel-track-up {
+  margin-bottom: calc(-2 * var(--reel-row, 1.15em));
+}
+
+.word-reel-dimmed {
+  opacity: 0.4;
+}
+
+.word-reel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* --target-mult (set inline, per instance/state): -1 resting, 0 or -2
+     mid-scroll depending on direction and which way it's stepping — see
+     WordReel.jsx. */
+  transform: translateY(calc(var(--target-mult, -1) * var(--reel-row, 1.15em)));
+  transition: transform 650ms cubic-bezier(0.45, 0, 0.2, 1);
+}
+
+.word-reel.word-reel-no-transition {
+  transition: none;
+}
+
+.word-reel-row {
+  /* Height comes from the inherited line-height (each slide sets it equal
+     to --reel-row on .equation), not a fixed box + flex-centering — that's
+     what makes it match the surrounding static words' own baseline
+     placement instead of merely sharing a bottom edge. */
+  text-align: center;
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+
+.word-reel-row-peek-0 {
+  opacity: 1;
+}
+
+.word-reel-row-peek-1 {
+  opacity: 0.2;
+}
+
+.word-reel-row-peek-2 {
+  opacity: 0.06;
+}
