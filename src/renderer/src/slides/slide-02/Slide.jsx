@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import './equation-slide.css';
 
 const WORDS = [
@@ -25,27 +25,32 @@ const WORDS = [
 ];
 
 const CYCLE_MS = 3000;
-const TRANSITION_MS = 450;
 const PEEK = 2; // rows of neighboring words visible above/below the current one
 
 export default function Slide() {
   const [current, setCurrent] = useState(0);
   const [scrolling, setScrolling] = useState(false);
+  const [suppressTransition, setSuppressTransition] = useState(false);
 
   useEffect(() => {
-    let swapTimeout;
-    const interval = setInterval(() => {
-      setScrolling(true);
-      swapTimeout = setTimeout(() => {
-        setCurrent((i) => (i + 1) % WORDS.length);
-        setScrolling(false);
-      }, TRANSITION_MS);
-    }, CYCLE_MS);
-    return () => {
-      clearInterval(interval);
-      clearTimeout(swapTimeout);
-    };
+    const interval = setInterval(() => setScrolling(true), CYCLE_MS);
+    return () => clearInterval(interval);
   }, []);
+
+  // Once the scroll-up transition finishes, swap in the new word and snap
+  // the reel back to its resting position with transitions off — otherwise
+  // that reset itself gets animated, producing a jagged double-motion right
+  // as the word changes. Transitions are re-enabled two frames later, once
+  // the instant reset has actually painted.
+  const handleTransitionEnd = useCallback((e) => {
+    if (e.target !== e.currentTarget || !scrolling) return;
+    setSuppressTransition(true);
+    setCurrent((i) => (i + 1) % WORDS.length);
+    setScrolling(false);
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => setSuppressTransition(false));
+    });
+  }, [scrolling]);
 
   // One extra buffer row below the visible window (offset PEEK + 1) so the
   // reel always has a word ready to scroll in — never an empty gap.
@@ -66,7 +71,12 @@ export default function Slide() {
       </div>
       <div className="equation">
         <span className="equation-blank-track">
-          <span className={`equation-blank-reel ${scrolling ? 'scrolling' : ''}`}>
+          <span
+            className={`equation-blank-reel ${scrolling ? 'scrolling' : ''} ${
+              suppressTransition ? 'no-transition' : ''
+            }`}
+            onTransitionEnd={handleTransitionEnd}
+          >
             {rows.map(({ offset, word }) => (
               <span
                 key={offset}
