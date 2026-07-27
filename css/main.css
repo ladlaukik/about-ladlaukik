@@ -1,0 +1,81 @@
+:root {
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: #111214;
+  color: #f2f2f2;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  overflow: hidden;
+}
+
+#deck {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+}
+
+#slide-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4vw;
+  opacity: 1;
+  transition: opacity 350ms ease;
+}
+
+#slide-content.fade-out {
+  opacity: 0;
+}
+
+#slide-content .slide-number {
+  font-size: clamp(2.5rem, 8vw, 6rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.nav-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.08);
+  color: inherit;
+  border: none;
+  border-radius: 999px;
+  width: 3rem;
+  height: 3rem;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 150ms ease, opacity 150ms ease;
+}
+
+.nav-button:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.nav-button:disabled,
+.nav-button.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#prev-button {
+  left: 1.5rem;
+}
+
+#next-button {
+  right: 1.5rem;
+}
