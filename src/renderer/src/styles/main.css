@@ -27,6 +27,7 @@ body {
 #slide-content {
   position: absolute;
   inset: 0;
+  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -49,6 +50,7 @@ body {
 .nav-button {
   position: absolute;
   top: 50%;
+  z-index: 2;
   transform: translateY(-50%);
   background: rgba(255, 255, 255, 0.08);
   color: inherit;
